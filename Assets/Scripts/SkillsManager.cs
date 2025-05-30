@@ -1,22 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-public class SkillsManager : MonoBehaviour, IManager
+public class SkillsManager : MonoBehaviour
 {
+    public static SkillsManager Singleton { get; private set; }
+
     private List<Skill> _allSkills;
     private List<Skill> _availableSkills;
     private List<Skill> _activeSkills;
     private int _skillsOnCooldown;
 
+    private void Awake()
+    {
+        if (!Singleton)
+        {
+            Singleton = this;
+            DontDestroyOnLoad(this);
+        }
+
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
-        Load();
+        InitSkillPool();
         GenerateSkillSelection();
         SelectInitialSkills();
     }
@@ -27,28 +41,23 @@ public class SkillsManager : MonoBehaviour, IManager
 
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
-            ActivateSkill(1);
+            ActivateSkill(0);
         }
 
         if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
-            ActivateSkill(2);
+            ActivateSkill(1);
         }
 
         if (Keyboard.current.digit3Key.wasPressedThisFrame)
         {
-            ActivateSkill(3);
+            ActivateSkill(2);
         }
 
         if (Keyboard.current.digit4Key.wasPressedThisFrame)
         {
-            ActivateSkill(4);
+            ActivateSkill(3);
         }
-    }
-
-    private void OnDestroy()
-    {
-        Save();
     }
 
     private void InitSkillPool()
@@ -110,16 +119,14 @@ public class SkillsManager : MonoBehaviour, IManager
                 new SkillEffect(EffectType.Buff, 5f, 15f, StatType.Speed),
                 new SkillEffect(EffectType.Buff, 10f, 30f, StatType.Speed),
                 15f,
-                false),
-            new(
-                "Fortify", SkillType.Defense,
-                "Description",
-                new SkillEffect(EffectType.Buff, 5f, 30f, StatType.Armor),
-                new SkillEffect(EffectType.Buff, 10f, 60f, StatType.Armor),
-                60f,
-                false),
+                false)
         };
+        _availableSkills = new List<Skill>();
+        _activeSkills = new List<Skill>();
+        _skillsOnCooldown = 0;
+        Debug.Log("Skill pool initialized with " + _allSkills.Count + " skills.");
     }
+
     private void GenerateSkillSelection()
     {
         _availableSkills.Clear();
@@ -175,7 +182,7 @@ public class SkillsManager : MonoBehaviour, IManager
         _allSkills.Add(newSkill);
         Debug.Log($"New skill added: {newSkill.Title}. Total active skills: {_activeSkills.Count}");
     }
-    
+
     public void AddSkillToAvailable(Skill newSkill)
     {
         _availableSkills.Add(newSkill);
@@ -215,39 +222,4 @@ public class SkillsManager : MonoBehaviour, IManager
         Debug.Log($"No skills found for category: {type}");
         return null;
     }
-
-    public void Save()
-    {
-        var json = JsonUtility.ToJson(new SkillsWrapper
-        {
-            allSkills = _allSkills,
-            availableSkills = _availableSkills,
-            activeSkills = _activeSkills
-        });
-        File.WriteAllText(Application.persistentDataPath + "/skills.json", json);
-    }
-
-    public void Load()
-    {
-        var path = Application.persistentDataPath + "/skills.json";
-        if (!File.Exists(path))
-        {
-            InitSkillPool();
-        }
-
-        var json = File.ReadAllText(path);
-        var wrapper = JsonUtility.FromJson<SkillsWrapper>(json);
-
-        _allSkills = wrapper.allSkills;
-        _availableSkills = wrapper.availableSkills;
-        _activeSkills = wrapper.activeSkills;
-    }
-}
-
-[Serializable]
-public class SkillsWrapper
-{
-    public List<Skill> allSkills;
-    public List<Skill> availableSkills;
-    public List<Skill> activeSkills;
 }
