@@ -14,15 +14,6 @@ public class Shop : MonoBehaviour
     {
         _skillsManager = SkillsManager.Singleton;
     }
-    
-    // Имитация покупки скилла у торговца
-    private void Update()
-    {
-        if (_shopIsOpen)
-        {
-            BuySkill();
-        }
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,6 +21,7 @@ public class Shop : MonoBehaviour
         
         _shopIsOpen = true;
         Debug.Log("Shop opened.");
+        BuySkill();
     }
 
     private void OnTriggerExit(Collider other)
