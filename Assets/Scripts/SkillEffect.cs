@@ -17,7 +17,7 @@ public class SkillEffect
         _duration = duration;
     }
 
-    public SkillEffect(EffectType type, float value, float duration, StatType? targetStat)
+    public SkillEffect(EffectType type, float value, float duration, StatType targetStat)
     {
         _effectType = type;
         _value = value;

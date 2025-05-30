@@ -5,6 +5,7 @@
         Hp,
         Mana,
         Armor,
-        Speed
+        Speed,
+        Visibility
     }
 }

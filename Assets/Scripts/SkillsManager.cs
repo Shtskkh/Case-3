@@ -57,66 +57,66 @@ public class SkillsManager : MonoBehaviour, IManager
         {
             new(
                 "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
+                "Description",
                 new SkillEffect(EffectType.Damage, 5f, 0),
                 new SkillEffect(EffectType.Damage, 10f, 0),
                 5f,
                 false),
             new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
+                "Ice Blast", SkillType.Attack,
+                "Description.",
+                new SkillEffect(EffectType.Damage, 10f, 0),
+                new SkillEffect(EffectType.Damage, 20f, 0),
+                10f,
+                false),
+            new(
+                "Shield", SkillType.Defense,
+                "Description",
+                new SkillEffect(EffectType.Buff, 30f, 15f, StatType.Armor),
+                new SkillEffect(EffectType.Buff, 60f, 30f, StatType.Armor),
+                25f,
+                false),
+            new(
+                "Lightning Strike", SkillType.Attack,
+                "Description",
                 new SkillEffect(EffectType.Damage, 5f, 0),
                 new SkillEffect(EffectType.Damage, 10f, 0),
+                12f,
+                false),
+            new(
+                "Invisibility", SkillType.Utility,
+                "Description",
+                new SkillEffect(EffectType.Buff, 1f, 25f, StatType.Visibility),
+                new SkillEffect(EffectType.Buff, 1f, 50f, StatType.Visibility),
+                60f,
+                false),
+            new(
+                "Barrier", SkillType.Defense,
+                "Description",
+                new SkillEffect(EffectType.Buff, 8f, 15f, StatType.Armor),
+                new SkillEffect(EffectType.Buff, 16f, 30f, StatType.Armor),
                 5f,
                 false),
             new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
+                "Poison Dart", SkillType.Attack,
+                "Description",
+                new SkillEffect(EffectType.Damage, 15f, 0),
+                new SkillEffect(EffectType.Damage, 30f, 0),
+                6f,
                 false),
             new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
+                "Speed Boost", SkillType.Utility,
+                "Description",
+                new SkillEffect(EffectType.Buff, 5f, 15f, StatType.Speed),
+                new SkillEffect(EffectType.Buff, 10f, 30f, StatType.Speed),
+                15f,
                 false),
             new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
-                false),
-            new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
-                false),
-            new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
-                false),
-            new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
-                false),
-            new(
-                "Fireball", SkillType.Attack,
-                "Launches a fireball in the direction of the mouse.",
-                new SkillEffect(EffectType.Damage, 5f, 0),
-                new SkillEffect(EffectType.Damage, 10f, 0),
-                5f,
+                "Fortify", SkillType.Defense,
+                "Description",
+                new SkillEffect(EffectType.Buff, 5f, 30f, StatType.Armor),
+                new SkillEffect(EffectType.Buff, 10f, 60f, StatType.Armor),
+                60f,
                 false),
         };
     }
@@ -170,7 +170,19 @@ public class SkillsManager : MonoBehaviour, IManager
         }
     }
 
-    public void AddSkill(Skill newSkill)
+    public void AddSkillToPool(Skill newSkill)
+    {
+        _allSkills.Add(newSkill);
+        Debug.Log($"New skill added: {newSkill.Title}. Total active skills: {_activeSkills.Count}");
+    }
+    
+    public void AddSkillToAvailable(Skill newSkill)
+    {
+        _availableSkills.Add(newSkill);
+        Debug.Log($"New skill added: {newSkill.Title}. Total active skills: {_activeSkills.Count}");
+    }
+
+    public void AddSkillToActive(Skill newSkill)
     {
         _activeSkills.Add(newSkill);
         Debug.Log($"New skill added: {newSkill.Title}. Total active skills: {_activeSkills.Count}");
