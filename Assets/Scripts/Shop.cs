@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Enums;
+﻿using Enums;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Random = UnityEngine.Random;
 
 public class Shop : MonoBehaviour
 {
